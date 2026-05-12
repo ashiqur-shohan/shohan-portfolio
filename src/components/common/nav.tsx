@@ -94,6 +94,7 @@ export function Nav() {
           <Button
             variant="ghost"
             size="icon"
+            nativeButton={false}
             render={
               <a
                 href="https://github.com/ashiqurrahman-shohan"
