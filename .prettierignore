@@ -1,0 +1,9 @@
+# Authored docs — preserve the owner's formatting
+/PRD.md
+/CLAUDE.md
+/README.md
+
+# Generated / vendored
+pnpm-lock.yaml
+.next/
+node_modules/
