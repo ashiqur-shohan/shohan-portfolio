@@ -7,6 +7,7 @@ import {
   FolderKanban,
   LayoutDashboard,
   LogOut,
+  Newspaper,
 } from "lucide-react";
 
 import { signOut } from "@/lib/actions/auth";
@@ -16,6 +17,7 @@ import { Button } from "@/components/ui/button";
 const links = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "Projects", href: "/admin/projects", icon: FolderKanban },
+  { title: "Blog", href: "/admin/blog", icon: Newspaper },
 ];
 
 export function AdminSidebar({

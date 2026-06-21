@@ -50,6 +50,18 @@
   --info-foreground: #ffffff; /* (alias) */
   --warning: #d97706;
   --warning-foreground: #ffffff; /* (alias) */
+
+  /* Blog code syntax highlighting (highlight.js, .post-body) — light */
+  --code-bg: #f5f5f4;
+  --code-fg: #1c1917;
+  --code-comment: #78716c;
+  --code-keyword: #7c3aed;
+  --code-string: #15803d;
+  --code-number: #b45309;
+  --code-function: #0369a1;
+  --code-builtin: #4f46e5;
+  --code-variable: #9a3412;
+  --code-punctuation: #57534e;
 }
 
 .dark {
@@ -87,6 +99,18 @@
   --info-foreground: #1c1917; /* (alias) */
   --warning: #fbbf24;
   --warning-foreground: #1c1917; /* (alias) */
+
+  /* Blog code syntax highlighting (highlight.js, .post-body) — dark */
+  --code-bg: #1c1917;
+  --code-fg: #fafaf9;
+  --code-comment: #a8a29e;
+  --code-keyword: #c4b5fd;
+  --code-string: #4ade80;
+  --code-number: #fbbf24;
+  --code-function: #38bdf8;
+  --code-builtin: #818cf8;
+  --code-variable: #fdba74;
+  --code-punctuation: #a8a29e;
 }
 
 /* Map the tokens above into Tailwind's theme. `inline` keeps utilities pointing
@@ -134,4 +158,246 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ============================================================================
+   BLOG READING PAGE (.post-body)
+   Styles the static HTML produced at save time by lib/blocknote/render.ts
+   (ServerBlockNoteEditor.blocksToFullHTML + highlight.js). The public page
+   renders this HTML and never loads the editor. Every color is a token above —
+   no BlockNote CSS is loaded here, keeping the public surface token-driven.
+
+   BlockNote wraps each block as:
+     .bn-block-group > .bn-block-outer > .bn-block > .bn-block-content[data-content-type]
+   with nested lists as a .bn-block-group inside the parent .bn-block.
+   ============================================================================ */
+.post-body {
+  color: var(--foreground);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+/* Block rhythm: top margin on every block except the first in its group. */
+.post-body .bn-block-content {
+  margin-top: 1rem;
+}
+.post-body .bn-block-outer:first-child > .bn-block > .bn-block-content {
+  margin-top: 0;
+}
+.post-body .bn-block-content[data-content-type="heading"] {
+  margin-top: 2rem;
+}
+.post-body .bn-block-content[data-content-type$="ListItem"] {
+  margin-top: 0.375rem;
+}
+
+/* Reset the semantic elements BlockNote nests inside each block-content. */
+.post-body h1,
+.post-body h2,
+.post-body h3,
+.post-body h4,
+.post-body p,
+.post-body pre,
+.post-body blockquote {
+  margin: 0;
+}
+
+.post-body h1,
+.post-body h2,
+.post-body h3,
+.post-body h4 {
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--foreground);
+}
+.post-body h1 {
+  font-size: 1.875rem;
+}
+.post-body h2 {
+  font-size: 1.5rem;
+}
+.post-body h3 {
+  font-size: 1.25rem;
+}
+.post-body h4 {
+  font-size: 1.0625rem;
+}
+
+.post-body a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.post-body a:hover {
+  text-decoration: none;
+}
+
+.post-body strong {
+  font-weight: 700;
+  color: var(--foreground);
+}
+.post-body em {
+  font-style: italic;
+}
+
+/* Inline code (block code is reset under .post-body pre code below). */
+.post-body code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--muted);
+  color: var(--foreground);
+  padding: 0.15em 0.35em;
+  border-radius: var(--radius-sm);
+}
+
+.post-body blockquote {
+  border-left: 3px solid var(--primary);
+  padding-left: 1rem;
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+/* Lists: BlockNote renders items as <div data-content-type="…ListItem"><p>…</p></div>,
+   not <ul>/<ol>, so markers are drawn from the data attributes. */
+.post-body .bn-block-content[data-content-type="bulletListItem"],
+.post-body .bn-block-content[data-content-type="numberedListItem"] {
+  position: relative;
+  padding-left: 1.6em;
+}
+.post-body .bn-block-content[data-content-type="bulletListItem"]::before {
+  content: "•";
+  position: absolute;
+  left: 0.4em;
+  color: var(--muted-foreground);
+}
+.post-body .bn-block-content[data-content-type="numberedListItem"]::before {
+  content: attr(data-index) ".";
+  position: absolute;
+  left: 0;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.post-body .bn-block-content[data-content-type="checkListItem"] {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.post-body
+  .bn-block-content[data-content-type="checkListItem"]
+  input[type="checkbox"] {
+  margin-top: 0.45em;
+  accent-color: var(--primary);
+}
+.post-body .bn-block-content[data-content-type$="ListItem"] > p {
+  margin: 0;
+}
+
+/* Nested lists. */
+.post-body .bn-block .bn-block-group {
+  padding-left: 1.5rem;
+}
+.post-body .bn-block-content + .bn-block-group {
+  margin-top: 0.375rem;
+}
+
+/* Code blocks. */
+.post-body pre {
+  overflow-x: auto;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.post-body pre code {
+  font-family: var(--font-mono);
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Images / files. */
+.post-body figure.bn-file-block-content-wrapper {
+  width: auto !important;
+  max-width: 100%;
+  margin: 0;
+}
+.post-body .bn-visual-media {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+.post-body .bn-file-caption {
+  margin-top: 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+.post-body .bn-resize-handle {
+  display: none !important;
+}
+
+/* highlight.js token classes → code tokens (no inline colors in the HTML). */
+.post-body .hljs-comment,
+.post-body .hljs-quote {
+  color: var(--code-comment);
+  font-style: italic;
+}
+.post-body .hljs-keyword,
+.post-body .hljs-selector-tag,
+.post-body .hljs-literal,
+.post-body .hljs-section,
+.post-body .hljs-tag,
+.post-body .hljs-name {
+  color: var(--code-keyword);
+}
+.post-body .hljs-string,
+.post-body .hljs-regexp,
+.post-body .hljs-addition,
+.post-body .hljs-meta .hljs-string {
+  color: var(--code-string);
+}
+.post-body .hljs-number,
+.post-body .hljs-symbol,
+.post-body .hljs-bullet,
+.post-body .hljs-literal.number_ {
+  color: var(--code-number);
+}
+.post-body .hljs-title,
+.post-body .hljs-title.function_,
+.post-body .hljs-section .hljs-title {
+  color: var(--code-function);
+}
+.post-body .hljs-built_in,
+.post-body .hljs-type,
+.post-body .hljs-title.class_,
+.post-body .hljs-variable.language_ {
+  color: var(--code-builtin);
+}
+.post-body .hljs-variable,
+.post-body .hljs-template-variable,
+.post-body .hljs-attr,
+.post-body .hljs-attribute,
+.post-body .hljs-property,
+.post-body .hljs-params {
+  color: var(--code-variable);
+}
+.post-body .hljs-operator,
+.post-body .hljs-punctuation {
+  color: var(--code-punctuation);
+}
+.post-body .hljs-deletion {
+  color: var(--destructive);
+}
+.post-body .hljs-emphasis {
+  font-style: italic;
+}
+.post-body .hljs-strong {
+  font-weight: 700;
 }

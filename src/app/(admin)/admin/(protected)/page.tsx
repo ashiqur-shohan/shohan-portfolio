@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { getCounts } from "@/lib/data/projects";
+import { getCounts as getPostCounts } from "@/lib/data/posts";
+import { getCounts as getProjectCounts } from "@/lib/data/projects";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +11,17 @@ import {
 } from "@/components/ui/card";
 
 export default async function AdminDashboardPage() {
-  const { total, published } = await getCounts();
+  const [projects, posts] = await Promise.all([
+    getProjectCounts(),
+    getPostCounts(),
+  ]);
+
+  const stats = [
+    { label: "Total projects", value: projects.total },
+    { label: "Published projects", value: projects.published },
+    { label: "Total posts", value: posts.total },
+    { label: "Published posts", value: posts.published },
+  ];
 
   return (
     <div className="space-y-8">
@@ -21,24 +32,25 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardDescription>Total projects</CardDescription>
-            <CardTitle className="text-3xl">{total}</CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Published</CardDescription>
-            <CardTitle className="text-3xl">{published}</CardTitle>
-          </CardHeader>
-        </Card>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <Card key={stat.label}>
+            <CardHeader>
+              <CardDescription>{stat.label}</CardDescription>
+              <CardTitle className="text-3xl">{stat.value}</CardTitle>
+            </CardHeader>
+          </Card>
+        ))}
       </div>
 
-      <Button asChild>
-        <Link href="/admin/projects">Manage projects</Link>
-      </Button>
+      <div className="flex flex-wrap gap-3">
+        <Button asChild>
+          <Link href="/admin/projects">Manage projects</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/admin/blog">Manage blog</Link>
+        </Button>
+      </div>
     </div>
   );
 }
