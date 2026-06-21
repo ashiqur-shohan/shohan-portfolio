@@ -35,23 +35,24 @@ export async function createClient() {
 }
 
 /**
- * Service-role client — FULL ACCESS, bypasses RLS, and is the ONLY way to reach
- * the private `job_applications` schema (CLAUDE.md hard rule #2).
+ * Secret-key client — FULL ACCESS, bypasses RLS, and is the ONLY way to reach
+ * the private `job_applications` schema (CLAUDE.md hard rule #2). The secret key
+ * authenticates as the `service_role` Postgres role.
  *
  * This module imports "server-only", so importing it into a Client Component is
- * a build error. The service-role key must never reach the browser. Use this
+ * a build error. The secret key must never reach the browser. Use this
  * exclusively from Server Actions and Route Handlers.
  */
 export function createAdminClient() {
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const secretKey = process.env.SUPABASE_SECRET_KEY;
 
-  if (!serviceRoleKey) {
-    throw new Error("SUPABASE_SERVICE_ROLE_KEY is not set");
+  if (!secretKey) {
+    throw new Error("SUPABASE_SECRET_KEY is not set");
   }
 
   return createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    serviceRoleKey,
+    secretKey,
     {
       auth: {
         persistSession: false,

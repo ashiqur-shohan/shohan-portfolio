@@ -113,7 +113,7 @@ All colors are semantic CSS variables defined **once** in `app/globals.css` (`:r
 
 - **Performance:** SSR/SSG for public pages, optimized images via `next/image`, strong Lighthouse scores (target 90+).
 - **SEO:** Next Metadata API, per-post OG images, `sitemap.ts`, `robots.ts`.
-- **Security:** job-tracker schema isolation, RLS on public tables, service-role key never client-side.
+- **Security:** job-tracker schema isolation, RLS on public tables, secret key never client-side.
 - **Analytics:** Vercel Web Analytics + Speed Insights.
 
 ---

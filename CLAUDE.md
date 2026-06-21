@@ -43,7 +43,7 @@ src/
 │   │   ├── projects.ts       #   per-entity module: read + write functions over the backend
 │   │   ├── storage.ts        #   file uploads (Supabase Storage today)
 │   │   ├── posts.ts          #   (add with the blog)
-│   │   ├── job-applications.ts#   (add with the tracker; service-role only)
+│   │   ├── job-applications.ts#   (add with the tracker; secret key only)
 │   │   └── types.ts          #   domain types (Project, ProjectWrite…) — import these, NOT supabase/*
 │   ├── actions/              # 'use server' mutations — auth + zod + revalidate; call lib/data
 │   ├── validations/          # Zod schemas (one per entity); validated server-side in actions
@@ -106,10 +106,9 @@ proxy.ts     →  @supabase/ssr    (edge middleware — allowed exception)
 
 ### 2. Security — the job tracker holds real personal data
 
-- The `job_applications` table lives in a **separate Postgres schema that is NOT exposed** through the Supabase API.
-- It is read/written **only from server actions using the service-role key**. The service-role key never reaches the client/browser.
+- The `job_applications` table lives in a separate **`private`** Postgres schema. That schema is added to Supabase's **Exposed Schemas** but granted to the **`service_role`** Postgres role — which only the **secret key** can act as — **ONLY**; `anon` and `authenticated` get no privileges and are denied. It is read/written **only from admin-gated server actions using the secret key**, which never reaches the client/browser.
 - Public tables (`posts`, `projects`) have **RLS enabled**: anonymous users may `SELECT` only published rows; the admin user (matched by email) has full CRUD.
-- Never expose the service-role key client-side. Never rely on UI hiding for access control — enforce at the database/API layer.
+- Never expose the secret key client-side. Never rely on UI hiding for access control — enforce at the database/API layer.
 
 ### 3. Blog (BlockNote)
 
@@ -130,7 +129,7 @@ proxy.ts     →  @supabase/ssr    (edge middleware — allowed exception)
 - App Router route groups: `(public)` and `(admin)`.
 - Server Components + Server Actions by default; use client components only where interactivity requires it.
 - Zod schemas live in `src/lib/validations/`; validate on the server inside actions.
-- Data access goes through `src/lib/data/` (see Hard rule 4 and Project structure). The Supabase clients in `src/lib/supabase/` (`client.ts` browser/anon, `server.ts` server + service-role) are used **only** by `lib/data` and `lib/auth.ts`.
+- Data access goes through `src/lib/data/` (see Hard rule 4 and Project structure). The Supabase clients in `src/lib/supabase/` (`client.ts` browser/anon, `server.ts` server + secret key) are used **only** by `lib/data` and `lib/auth.ts`.
 - `/admin` is gated in `src/proxy.ts` (Next 16's renamed middleware) with a single allowlisted admin email.
 - Build UI from shadcn/ui components wherever possible.
 - Responsive (mobile-first) and dark-mode-ready from the start. Target WCAG AA contrast.

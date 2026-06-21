@@ -76,3 +76,79 @@ export type PostWrite = Omit<
   Post,
   "id" | "created_at" | "updated_at" | "published_at"
 >;
+
+/* ----------------------------- Job tracker ------------------------------- */
+/* Private personal data — lives in the `private` schema, reachable only via the
+ * secret-key client (the service_role role) from admin-gated actions
+ * (CLAUDE.md hard rule #2). */
+
+export type JobStatus =
+  | "applied"
+  | "screening"
+  | "interview"
+  | "offer"
+  | "rejected"
+  | "ghosted";
+
+/** The pipeline order, used for the kanban columns and any iteration. */
+export const JOB_STATUSES: readonly JobStatus[] = [
+  "applied",
+  "screening",
+  "interview",
+  "offer",
+  "rejected",
+  "ghosted",
+];
+
+/** Human labels for each status. Shared by the board and the form. */
+export const JOB_STATUS_LABELS: Record<JobStatus, string> = {
+  applied: "Applied",
+  screening: "Screening",
+  interview: "Interview",
+  offer: "Offer",
+  rejected: "Rejected",
+  ghosted: "Ghosted",
+};
+
+export type JobApplication = {
+  id: string;
+  company: string;
+  role: string;
+  /** `date` column → ISO "YYYY-MM-DD". */
+  application_date: string;
+  status: JobStatus;
+  /** DB-owned latch: true once the app reached interview/offer (never cleared). */
+  reached_interview: boolean;
+  source: string | null;
+  job_url: string | null;
+  salary_min: number | null;
+  salary_max: number | null;
+  contact_name: string | null;
+  contact_email: string | null;
+  /** `date` column → ISO "YYYY-MM-DD", or null. */
+  next_follow_up: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+/**
+ * Columns the admin can write. `reached_interview` is omitted because the DB
+ * trigger owns it (see 0004), alongside id/timestamps.
+ */
+export type JobApplicationWrite = Omit<
+  JobApplication,
+  "id" | "created_at" | "updated_at" | "reached_interview"
+>;
+
+/** Funnel summary for the tracker + admin dashboard. */
+export type JobStats = {
+  total: number;
+  byStatus: Record<JobStatus, number>;
+  /** Share of applications that got any response (not applied/ghosted). */
+  responseRate: number;
+  /** Share of applications that ever reached interview/offer (the latch). */
+  interviewRate: number;
+  /** Active applications whose follow-up date is today or earlier. */
+  followUpsDue: number;
+};

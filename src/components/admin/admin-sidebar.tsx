@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Briefcase,
   ExternalLink,
   FolderKanban,
   LayoutDashboard,
@@ -18,6 +19,7 @@ const links = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "Projects", href: "/admin/projects", icon: FolderKanban },
   { title: "Blog", href: "/admin/blog", icon: Newspaper },
+  { title: "Jobs", href: "/admin/jobs", icon: Briefcase },
 ];
 
 export function AdminSidebar({

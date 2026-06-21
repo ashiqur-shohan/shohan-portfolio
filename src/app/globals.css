@@ -50,6 +50,7 @@
   --info-foreground: #ffffff; /* (alias) */
   --warning: #d97706;
   --warning-foreground: #ffffff; /* (alias) */
+  --warning-strong: #b45309; /* readable warning text on light surfaces (AA) */
 
   /* Blog code syntax highlighting (highlight.js, .post-body) — light */
   --code-bg: #f5f5f4;
@@ -99,6 +100,7 @@
   --info-foreground: #1c1917; /* (alias) */
   --warning: #fbbf24;
   --warning-foreground: #1c1917; /* (alias) */
+  --warning-strong: #fbbf24; /* dark mode already has high contrast */
 
   /* Blog code syntax highlighting (highlight.js, .post-body) — dark */
   --code-bg: #1c1917;
@@ -137,6 +139,7 @@
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
   --color-warning: var(--warning);
+  --color-warning-strong: var(--warning-strong);
   --color-warning-foreground: var(--warning-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
