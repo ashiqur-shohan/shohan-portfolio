@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { getProjects } from "@/lib/data/projects";
+import { listPublished } from "@/lib/data/projects";
 import { ProjectCard } from "@/components/project-card";
 
 export const metadata: Metadata = {
@@ -9,8 +9,8 @@ export const metadata: Metadata = {
     "Selected work and case studies — the problem, my approach, and the outcome.",
 };
 
-export default function ProjectsPage() {
-  const projects = getProjects();
+export default async function ProjectsPage() {
+  const projects = await listPublished();
 
   return (
     <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
@@ -23,11 +23,18 @@ export default function ProjectsPage() {
           studies.
         </p>
       </header>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
-      </div>
+
+      {projects.length === 0 ? (
+        <p className="border-border bg-muted/40 text-muted-foreground mt-10 rounded-lg border p-8 text-center">
+          Projects are coming soon.
+        </p>
+      ) : (
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

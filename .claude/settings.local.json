@@ -4,7 +4,12 @@
       "Bash(set -e)",
       "Bash(mkdir -p ../_shohan_tmp_docs)",
       "Bash(mv CLAUDE.md PRD.md ../_shohan_tmp_docs/)",
-      "Bash(pnpm --version)"
+      "Bash(pnpm --version)",
+      "PowerShell(git -C \"f:\\\\Personal\\\\shohan-portfolio\" status)",
+      "PowerShell(git -C \"f:\\\\Personal\\\\shohan-portfolio\" diff --stat)",
+      "Bash(git add *)",
+      "Bash(grep -iE \"\\(^|/\\)\\\\.env\\( |$\\)\")",
+      "Bash(git commit -q -m ' *)"
     ]
   }
 }

@@ -22,6 +22,69 @@ Personal portfolio + private admin panel for **Ashiqur Rahman Shohan**. Two surf
 - Vitest + React Testing Library + Playwright (tests)
 - Deployed on Vercel
 
+## Project structure
+
+Standard Next.js App Router layout. Guiding principle: **the backend lives behind a seam.** Today that backend is Supabase; the rest of the app must not know or care. Put new code in the right layer so a future custom backend is a one-layer rewrite, not a hunt through pages and components.
+
+```
+src/
+├── app/                      # App Router — routing, layouts, pages ONLY
+│   ├── (public)/             # public group: home, about, projects, projects/[slug], blog, contact
+│   ├── (admin)/              # admin group: admin/login + admin/(protected) CRUD
+│   ├── layout.tsx · globals.css · robots.ts · sitemap.ts · opengraph-image.tsx
+│   └── error.tsx/loading.tsx/not-found.tsx   # route boundaries — colocate per segment, add as needed
+├── components/
+│   ├── ui/                   # shadcn/ui primitives (generated; leave mostly alone)
+│   ├── sections/             # composed page sections (hero, skills, featured-projects…)
+│   ├── admin/                # admin-only feature components
+│   └── *.tsx                 # shared app components (site-header, project-card, icons…)
+├── lib/
+│   ├── data/                 # ★ DATA-ACCESS SEAM — the ONLY place Supabase is imported for data
+│   │   ├── projects.ts       #   per-entity module: read + write functions over the backend
+│   │   ├── storage.ts        #   file uploads (Supabase Storage today)
+│   │   ├── posts.ts          #   (add with the blog)
+│   │   ├── job-applications.ts#   (add with the tracker; service-role only)
+│   │   └── types.ts          #   domain types (Project, ProjectWrite…) — import these, NOT supabase/*
+│   ├── actions/              # 'use server' mutations — auth + zod + revalidate; call lib/data
+│   ├── validations/          # Zod schemas (one per entity); validated server-side in actions
+│   ├── supabase/             # Supabase client factories (the adapter; used ONLY by lib/data + auth.ts)
+│   ├── auth.ts               # auth seam — wraps Supabase Auth (getAdminUser, requireAdmin, signIn…)
+│   ├── site-config.ts        # static site config (nav, socials, identity, skills)
+│   └── utils.ts              # pure, dependency-free helpers (cn, formatters…)
+├── hooks/                    # custom React hooks (add only when one is actually reused)
+└── proxy.ts                  # Next 16 middleware — gates /admin (edge auth; uses Supabase directly)
+```
+
+**Layering — who may import what (top depends on bottom; never the reverse):**
+
+```
+components   →  render only — never fetch data
+pages (RSC)  →  lib/data  (reads)        +  lib/actions (mutations)
+lib/actions  →  lib/data + lib/validations + lib/auth
+lib/data     →  lib/supabase     ← the ONLY data layer that imports @/lib/supabase/*
+lib/auth     →  lib/supabase     (auth adapter — allowed exception)
+proxy.ts     →  @supabase/ssr    (edge middleware — allowed exception)
+```
+
+**Backend-swap principle.** The app depends on the backend-agnostic functions `lib/data` exports, not on Supabase. Swapping to a custom API later = rewrite `lib/data/*` (and the `supabase/` factories + `auth.ts`) only; every page, component, action, and validation stays unchanged.
+
+**Where things go:**
+
+| Thing | Location |
+| --- | --- |
+| Data reads/writes (DB/storage calls) | `lib/data/<entity>.ts`, `lib/data/storage.ts` |
+| Domain types (`Project`, `Post`…) | `lib/data/types.ts` |
+| Zod schemas | `lib/validations/` |
+| Mutations / server actions | `lib/actions/` |
+| Static config (nav, socials) | `lib/site-config.ts` |
+| Pure helpers | `lib/utils.ts` |
+| Custom hooks | `src/hooks/` (add only when reused) |
+| shadcn primitives | `components/ui/` |
+| Page sections | `components/sections/` |
+| Feature components | `components/<feature>/` (e.g. `admin/`); shared ones at `components/` root |
+
+**App Router conventions going forward:** Server Components by default (`'use client'` only where interactivity requires it); keep the `(public)`/`(admin)` route groups; colocate `loading.tsx`/`error.tsx`/`not-found.tsx` in the segment they cover; `app/` is for routing/layout/pages only — never define data-fetching helpers inline in a page, move them to `lib/data`.
+
 ## Commands
 
 - `pnpm dev` — local dev
@@ -55,13 +118,20 @@ Personal portfolio + private admin panel for **Ashiqur Rahman Shohan**. Two surf
 - Render `content_html` with `ServerBlockNoteEditor.blocksToFullHTML()` on the server in the **Node.js runtime** (not edge). The public post page renders the HTML and **never loads the editor**.
 - Enable code-block syntax highlighting via `@blocknote/code-block`.
 
+### 4. Data access — isolate the backend
+
+- **Supabase is imported in exactly three places: `src/lib/data/` (the data seam), `src/lib/auth.ts` (auth adapter), and `src/proxy.ts` (edge middleware).** Nowhere else.
+- **Pages, components, and `lib/actions` must NOT import `@/lib/supabase/*`** — not the client factories, not `supabase/types`. Server Component pages read by calling `lib/data/<entity>`; mutations call `lib/actions`, which call `lib/data`. Import domain types from `@/lib/data/types`.
+- **Components never fetch data.** A Server Component fetches via `lib/data` and passes props down; client components mutate via server actions only.
+- The app depends on the **backend-agnostic** functions `lib/data` exports. Today the implementation is Supabase; swapping to a custom backend later must be a rewrite of `lib/data/*` (+ the `supabase/` factories and `auth.ts`) only — callers unchanged. If you reach for `@/lib/supabase` outside those three places, stop and add/extend a `lib/data` function instead.
+
 ## Conventions
 
 - App Router route groups: `(public)` and `(admin)`.
 - Server Components + Server Actions by default; use client components only where interactivity requires it.
 - Zod schemas live in `src/lib/validations/`; validate on the server inside actions.
-- Supabase clients in `src/lib/supabase/`: `client.ts` (browser/anon) and `server.ts` (server + service-role).
-- `/admin` is gated in `src/middleware.ts` with a single allowlisted admin email.
+- Data access goes through `src/lib/data/` (see Hard rule 4 and Project structure). The Supabase clients in `src/lib/supabase/` (`client.ts` browser/anon, `server.ts` server + service-role) are used **only** by `lib/data` and `lib/auth.ts`.
+- `/admin` is gated in `src/proxy.ts` (Next 16's renamed middleware) with a single allowlisted admin email.
 - Build UI from shadcn/ui components wherever possible.
 - Responsive (mobile-first) and dark-mode-ready from the start. Target WCAG AA contrast.
 

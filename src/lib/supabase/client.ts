@@ -1,12 +1,12 @@
 import { createBrowserClient } from "@supabase/ssr";
 
 /**
- * Browser Supabase client (anon key). Safe to use in Client Components.
+ * Browser Supabase client (publishable key). Safe to use in Client Components.
  * Bound by Row Level Security — only ever sees what RLS permits.
  */
 export function createClient() {
   return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
   );
 }

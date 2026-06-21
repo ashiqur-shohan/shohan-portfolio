@@ -3,24 +3,24 @@
  *
  * Identity, navigation, socials, contact email, resume path, and the
  * About / Skills copy all live here, so content changes never touch components.
- * (Project case studies live in `src/lib/data/projects.ts`.)
+ * (Project case studies are managed in the admin and stored in Supabase.)
  */
 export const siteConfig = {
   name: "Ashiqur Rahman Shohan",
-  role: "Full-Stack Web Developer",
+  role: "Full-Stack Software Engineer",
   // One-line value proposition, shown large in the hero.
-  tagline: "I build fast, accessible web apps with Next.js and TypeScript.",
+  tagline:
+    "I build and ship production web apps with Laravel, Django, and React.",
   // Supporting line, reused as the default meta description.
   description:
-    "I'm a full-stack developer focused on shipping polished, performant products — from clean, accessible UI to reliable APIs.",
-  location: "Dhaka, Bangladesh", // TODO: your location
+    "Full-stack software engineer shipping production web applications — from a multi-platform real-estate system on web and mobile to a salon ERP with daily financial reporting.",
+  location: "Dhaka, Bangladesh",
 
-  // TODO: replace these with your real details.
-  email: "hello@example.com",
+  email: "ashiqur.shohan@gmail.com",
   resumeUrl: "/resume.pdf",
   socials: {
-    github: "https://github.com/your-username",
-    linkedin: "https://www.linkedin.com/in/your-handle",
+    github: "https://github.com/ashiqur-shohan",
+    linkedin: "https://www.linkedin.com/in/ashiqur-shohan",
   },
 
   // Public base URL — used for metadata, sitemap, and OG images.
@@ -36,33 +36,34 @@ export const siteConfig = {
   ],
 
   about: {
-    headline: "A developer who sweats the details.",
+    headline: "Full-stack engineer who ships real products.",
     paragraphs: [
-      "I'm Ashiqur — a full-stack web developer who enjoys turning ideas into fast, accessible products. I work mostly with React, Next.js, and TypeScript on the front end, and Node.js with PostgreSQL on the back end.",
-      "I care about the things people feel but rarely name: snappy load times, sensible defaults, keyboard accessibility, and interfaces that work just as well on a phone as on a laptop.",
-      "Outside of client work I build side projects to learn in public and sharpen my craft. I'm currently open to freelance projects and full-time roles.",
+      "I'm Ashiqur — a full-stack software engineer based in Dhaka, Bangladesh. I build and maintain production web applications across Laravel, Django REST Framework, and React, and I'm comfortable moving between PHP, Python, JavaScript, and SQL.",
+      "I've shipped products that serve real users: Estate-Link, a multi-platform real-estate management system live on the web, Google Play, and the App Store; and Salon-ERP, a salon ERP in daily use with mobile-money and bank financial reporting.",
+      "I like owning a feature end to end — from API and data model to a clean, accessible UI — and I'm currently sharpening up on Next.js, testing, and DevOps. I'm open to freelance projects and full-time roles.",
     ],
   },
 
   skills: [
     {
-      group: "Frontend",
-      items: [
-        "React",
-        "Next.js",
-        "TypeScript",
-        "Tailwind CSS",
-        "shadcn/ui",
-        "React Hook Form",
-      ],
+      group: "Languages",
+      items: ["PHP", "JavaScript", "TypeScript", "Python", "SQL"],
     },
     {
       group: "Backend",
-      items: ["Node.js", "PostgreSQL", "Supabase", "REST APIs", "Zod"],
+      items: ["Laravel", "Django", "Django REST Framework", "REST APIs"],
     },
     {
-      group: "Tooling",
-      items: ["Git", "Vercel", "Vitest", "Playwright", "Figma"],
+      group: "Frontend",
+      items: ["React", "Next.js", "Tailwind CSS", "Redux / Context API"],
+    },
+    {
+      group: "Databases",
+      items: ["MySQL", "PostgreSQL", "Supabase"],
+    },
+    {
+      group: "Tools & Deploy",
+      items: ["Git", "GitHub", "Linux", "Postman", "DigitalOcean", "Vercel"],
     },
   ],
 } as const;

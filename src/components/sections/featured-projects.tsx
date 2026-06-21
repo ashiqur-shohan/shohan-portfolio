@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-import { getFeaturedProjects } from "@/lib/data/projects";
+import { listFeatured } from "@/lib/data/projects";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
 
-export function FeaturedProjects() {
-  const projects = getFeaturedProjects();
+export async function FeaturedProjects() {
+  const projects = await listFeatured();
   if (projects.length === 0) return null;
 
   return (
@@ -25,7 +25,7 @@ export function FeaturedProjects() {
       </div>
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
+          <ProjectCard key={project.id} project={project} />
         ))}
       </div>
     </section>

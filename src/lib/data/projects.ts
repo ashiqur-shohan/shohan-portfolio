@@ -1,94 +1,153 @@
+import "server-only";
+
+import { createPublicClient } from "@/lib/supabase/public";
+import { createClient } from "@/lib/supabase/server";
+
+import type { Project, ProjectCounts, ProjectWrite } from "./types";
+
 /**
- * Seed project data (Phase 1). Replaced by Supabase-backed content in Phase 2.
- *
- * EDIT or add entries here — each one becomes a card on /projects and a
- * full case study at /projects/[slug].
+ * Data-access seam for `projects`. This module is the ONLY place Supabase is
+ * touched for project data — reads and writes both. Callers (pages, server
+ * actions) depend on these backend-agnostic functions, so swapping to a custom
+ * API later means rewriting this file alone, not its callers. See CLAUDE.md
+ * Hard rule 4.
  */
-export type Project = {
-  slug: string;
-  title: string;
-  summary: string;
-  problem: string;
-  approach: string;
-  outcome: string;
-  techStack: string[];
-  liveUrl?: string;
-  repoUrl?: string;
-  featured: boolean;
-  sortOrder: number;
-  year: number;
-};
 
-export const projects: Project[] = [
-  {
-    slug: "taskflow",
-    title: "TaskFlow — team task manager",
-    summary:
-      "A real-time task board for small teams, with drag-and-drop and instant sync.",
-    problem:
-      "Small teams were juggling tasks across spreadsheets and chat threads, with no shared source of truth and a lot of duplicated work.",
-    approach:
-      "I built a real-time Kanban board with optimistic UI and websocket sync, plus role-based access and email notifications — all tuned for a fast, keyboard-friendly experience.",
-    outcome:
-      "Teams cut their status-update meetings roughly in half and reported a much clearer picture of who was working on what.",
-    techStack: [
-      "Next.js",
-      "TypeScript",
-      "PostgreSQL",
-      "Tailwind CSS",
-      "WebSockets",
-    ],
-    liveUrl: "https://example.com",
-    repoUrl: "https://github.com/your-username/taskflow",
-    featured: true,
-    sortOrder: 1,
-    year: 2025,
-  },
-  {
-    slug: "ledgerlite",
-    title: "LedgerLite — invoicing for freelancers",
-    summary:
-      "A minimal invoicing app that turns tracked hours into polished, sendable invoices.",
-    problem:
-      "Freelancers were spending hours each month formatting invoices by hand and chasing payments without a clear overview of what was outstanding.",
-    approach:
-      "I designed a streamlined flow from time entry to PDF invoice, with reusable client profiles, tax handling, and a simple payment-status pipeline.",
-    outcome:
-      "Invoice creation dropped from ~30 minutes to under 2, with an at-a-glance view of every outstanding payment.",
-    techStack: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS", "Resend"],
-    liveUrl: "https://example.com",
-    repoUrl: "https://github.com/your-username/ledgerlite",
-    featured: true,
-    sortOrder: 2,
-    year: 2024,
-  },
-  {
-    slug: "wanderlog",
-    title: "WanderLog — travel journal",
-    summary:
-      "A map-first travel journal for logging trips, photos, and notes by location.",
-    problem:
-      "Travel memories were scattered across camera rolls and notes apps, with no easy way to revisit a whole trip in one place.",
-    approach:
-      "I built a map-centric interface where each pin opens a rich entry, plus offline-friendly drafts and fast image uploads with automatic optimization.",
-    outcome:
-      "A genuinely delightful way to relive trips — and a great playground for experimenting with maps and image performance.",
-    techStack: ["React", "TypeScript", "Node.js", "PostgreSQL", "Mapbox"],
-    repoUrl: "https://github.com/your-username/wanderlog",
-    featured: false,
-    sortOrder: 3,
-    year: 2024,
-  },
-];
-
-export function getProjects(): Project[] {
-  return [...projects].sort((a, b) => a.sortOrder - b.sortOrder);
+/**
+ * Next.js control-flow signals (dynamic-server usage, redirect, notFound) are
+ * thrown as errors carrying a `digest` string. They must propagate to the
+ * framework, never be swallowed as a "failed query".
+ */
+function isFrameworkSignal(err: unknown): boolean {
+  return typeof (err as { digest?: unknown })?.digest === "string";
 }
 
-export function getFeaturedProjects(): Project[] {
-  return getProjects().filter((project) => project.featured);
+/**
+ * Resilient wrapper for reads: if Supabase isn't configured/reachable yet, log
+ * and fall back instead of crashing the build or the page. Re-throws Next.js
+ * control-flow signals so dynamic routes are still detected correctly.
+ */
+async function safeQuery<T>(
+  label: string,
+  fallback: T,
+  run: () => Promise<T>,
+): Promise<T> {
+  try {
+    return await run();
+  } catch (err) {
+    if (isFrameworkSignal(err)) throw err;
+    console.error(`[data:projects] ${label} failed:`, err);
+    return fallback;
+  }
 }
 
-export function getProjectBySlug(slug: string): Project | undefined {
-  return projects.find((project) => project.slug === slug);
+/* ------------------------------ Public reads ----------------------------- */
+/* Anonymous, statically renderable; RLS restricts the anon role to published. */
+
+export async function listPublished(): Promise<Project[]> {
+  return safeQuery("listPublished", [], async () => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("published", true)
+      .order("sort_order", { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as Project[];
+  });
+}
+
+export async function listFeatured(): Promise<Project[]> {
+  return safeQuery("listFeatured", [], async () => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("published", true)
+      .eq("featured", true)
+      .order("sort_order", { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as Project[];
+  });
+}
+
+export async function getBySlug(slug: string): Promise<Project | null> {
+  return safeQuery("getBySlug", null, async () => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("slug", slug)
+      .eq("published", true)
+      .maybeSingle();
+    if (error) throw error;
+    return (data as Project | null) ?? null;
+  });
+}
+
+/* ------------------------------- Admin reads ----------------------------- */
+/* Session-bound (cookie); RLS grants the admin every row. */
+
+export async function listAll(): Promise<Project[]> {
+  return safeQuery("listAll", [], async () => {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .order("sort_order", { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as Project[];
+  });
+}
+
+export async function getById(id: string): Promise<Project | null> {
+  return safeQuery("getById", null, async () => {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (error) throw error;
+    return (data as Project | null) ?? null;
+  });
+}
+
+export async function getCounts(): Promise<ProjectCounts> {
+  return safeQuery("getCounts", { total: 0, published: 0 }, async () => {
+    const supabase = await createClient();
+    const [{ count: total }, { count: published }] = await Promise.all([
+      supabase.from("projects").select("*", { count: "exact", head: true }),
+      supabase
+        .from("projects")
+        .select("*", { count: "exact", head: true })
+        .eq("published", true),
+    ]);
+    return { total: total ?? 0, published: published ?? 0 };
+  });
+}
+
+/* --------------------------------- Writes -------------------------------- */
+/* Admin only — the calling server action enforces auth. These throw on error
+ * so the action can translate e.g. Postgres 23505 → "slug already taken". */
+
+export async function createProject(data: ProjectWrite): Promise<void> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("projects").insert(data);
+  if (error) throw error;
+}
+
+export async function updateProject(
+  id: string,
+  data: Partial<ProjectWrite>,
+): Promise<void> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("projects").update(data).eq("id", id);
+  if (error) throw error;
+}
+
+export async function removeProject(id: string): Promise<void> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("projects").delete().eq("id", id);
+  if (error) throw error;
 }

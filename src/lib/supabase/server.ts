@@ -5,7 +5,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 /**
- * Session-aware server client (anon key, cookie-bound). Use for public tables
+ * Session-aware server client (publishable key, cookie-bound). Use for public tables
  * (`posts`, `projects`) where access is governed by Row Level Security.
  */
 export async function createClient() {
@@ -13,7 +13,7 @@ export async function createClient() {
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
       cookies: {
         getAll() {
