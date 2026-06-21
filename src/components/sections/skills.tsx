@@ -1,6 +1,7 @@
 import { siteConfig } from "@/lib/site-config";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SkillIcon } from "@/components/skill-icon";
 
 export function Skills() {
   return (
@@ -18,6 +19,7 @@ export function Skills() {
               <div className="flex flex-wrap gap-1.5">
                 {group.items.map((item) => (
                   <Badge key={item} variant="secondary">
+                    <SkillIcon name={item} />
                     {item}
                   </Badge>
                 ))}
