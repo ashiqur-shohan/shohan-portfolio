@@ -38,6 +38,9 @@ export function BlocknoteEditor({
       Array.isArray(initialContent) && initialContent.length > 0
         ? (initialContent as EditorBlock[])
         : undefined,
+    // Give the contenteditable region an accessible name (the visible "Content"
+    // label in the form can't be associated with it via htmlFor).
+    domAttributes: { editor: { "aria-label": "Post content" } },
   });
 
   // Seed the parent with the initial document so a save with no edits still

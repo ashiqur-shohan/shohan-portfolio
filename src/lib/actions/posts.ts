@@ -21,10 +21,39 @@ function parseTags(input?: string): string[] {
     .filter(Boolean);
 }
 
+/**
+ * Whether the block document holds real content. BlockNote always seeds a new
+ * document with a single empty paragraph, so a plain `length` check never catches
+ * a blank post. Any non-paragraph block (heading, list, image, code…) counts as
+ * content; a paragraph counts only if it has non-whitespace text.
+ */
+function hasContent(blocks: unknown[]): boolean {
+  return blocks.some((block) => {
+    const { type, content } = (block ?? {}) as {
+      type?: string;
+      content?: unknown;
+    };
+    if (type !== "paragraph") return true;
+    if (typeof content === "string") return content.trim().length > 0;
+    if (Array.isArray(content)) {
+      return content.some((item) => {
+        const text = (item as { text?: string })?.text;
+        return typeof text === "string" && text.trim().length > 0;
+      });
+    }
+    return false;
+  });
+}
+
 function revalidatePostViews(slug?: string) {
   revalidatePath("/");
   revalidatePath("/blog");
-  if (slug) revalidatePath(`/blog/${slug}`);
+  if (slug) {
+    revalidatePath(`/blog/${slug}`);
+    // The per-post OG image is a separate (statically generated) route segment;
+    // revalidate it too so edited titles/excerpts don't keep stale preview art.
+    revalidatePath(`/blog/${slug}/opengraph-image`);
+  }
   revalidatePath("/admin");
   revalidatePath("/admin/blog");
 }
@@ -41,7 +70,7 @@ export async function savePost(
   if (!parsed.success) {
     return { ok: false, message: "Please fix the highlighted fields." };
   }
-  if (!Array.isArray(contentJson) || contentJson.length === 0) {
+  if (!Array.isArray(contentJson) || !hasContent(contentJson)) {
     return { ok: false, message: "Add some content before saving." };
   }
   const v = parsed.data;

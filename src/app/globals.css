@@ -320,6 +320,12 @@
   color: inherit;
   font-size: inherit;
 }
+/* The code block is keyboard-focusable (tabindex set in render.ts) so wide code
+   can be scrolled without a mouse; show where focus lands. */
+.post-body pre:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 
 /* Images / files. */
 .post-body figure.bn-file-block-content-wrapper {
