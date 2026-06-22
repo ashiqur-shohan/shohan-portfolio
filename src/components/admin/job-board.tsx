@@ -25,15 +25,15 @@ import type { JobApplication, JobStatus } from "@/lib/data/types";
 import { cn } from "@/lib/utils";
 import { JobCard } from "@/components/admin/job-card";
 
-// Dot colors — the PRD §7 status→token mapping. Only the dot is colored, so the
-// card text always meets contrast (avoids amber-on-light failing AA).
+// Dot colors — the design.md status→token mapping. Only the dot is colored, so
+// the card text always meets contrast regardless of status.
 const STATUS_DOT: Record<JobStatus, string> = {
   applied: "bg-muted-foreground",
   screening: "bg-info",
-  interview: "bg-accent",
+  interview: "bg-secondary",
   offer: "bg-success",
   rejected: "bg-destructive",
-  ghosted: "bg-muted-foreground",
+  ghosted: "bg-data-neutral",
 };
 
 function Column({

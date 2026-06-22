@@ -9,14 +9,27 @@ const socialLinks = [
   { href: `mailto:${siteConfig.email}`, label: "Email", icon: Mail },
 ];
 
+function Brand() {
+  const i = siteConfig.brand.indexOf(".");
+  const main = i === -1 ? siteConfig.brand : siteConfig.brand.slice(0, i);
+  const suffix = i === -1 ? "" : siteConfig.brand.slice(i);
+  return (
+    <span className="font-display font-semibold">
+      {main}
+      <span className="text-primary">{suffix}</span>
+    </span>
+  );
+}
+
 export function SiteFooter() {
   return (
-    <footer className="border-border border-t">
-      <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <p className="text-muted-foreground text-sm">
-          © {new Date().getFullYear()} {siteConfig.name}
+    <footer className="border-border border-t py-[30px]">
+      <div className="mx-auto flex w-full max-w-[1080px] flex-wrap items-center justify-between gap-3.5 px-6">
+        <Brand />
+        <p className="text-muted-foreground text-[13px]">
+          Designed &amp; built by {siteConfig.name} · {new Date().getFullYear()}
         </p>
-        <nav className="flex items-center gap-1" aria-label="Social">
+        <nav className="flex items-center gap-3" aria-label="Social">
           {socialLinks.map(({ href, label, icon: Icon }) => {
             const external = href.startsWith("http");
             return (
@@ -26,9 +39,9 @@ export function SiteFooter() {
                 aria-label={label}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noopener noreferrer" : undefined}
-                className="text-muted-foreground hover:bg-muted hover:text-foreground inline-flex size-9 items-center justify-center rounded-md transition-colors"
+                className="border-border text-muted-foreground hover:text-primary hover:border-primary grid size-[38px] place-items-center rounded-full border transition-colors"
               >
-                <Icon className="size-5" />
+                <Icon className="size-[17px]" />
               </a>
             );
           })}

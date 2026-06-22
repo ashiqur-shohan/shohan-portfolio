@@ -1,33 +1,38 @@
 import Link from "next/link";
 
 import { listRecent } from "@/lib/data/posts";
-import { Button } from "@/components/ui/button";
+import { Section, SectionHeader } from "@/components/sections/section";
 import { PostCard } from "@/components/post-card";
 
 export async function LatestPosts() {
   const posts = await listRecent(3);
-  if (posts.length === 0) return null;
 
   return (
-    <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h2 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
-            Latest writing
-          </h2>
-          <p className="text-muted-foreground mt-2">
-            Notes on what I build and learn.
-          </p>
-        </div>
-        <Button asChild variant="ghost">
-          <Link href="/blog">All posts →</Link>
-        </Button>
-      </div>
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </div>
-    </section>
+    <Section id="blog" alt>
+      <SectionHeader eyebrow="Writing" title="From the blog" />
+
+      {posts.length === 0 ? (
+        <p className="border-border text-muted-foreground rounded-[14px] border p-8 text-center">
+          Posts are coming soon.
+        </p>
+      ) : (
+        <>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-5">
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+
+          <div className="mt-8">
+            <Link
+              href="/blog"
+              className="text-secondary text-sm font-semibold hover:underline"
+            >
+              View all posts →
+            </Link>
+          </div>
+        </>
+      )}
+    </Section>
   );
 }

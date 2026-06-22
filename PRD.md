@@ -38,6 +38,8 @@ Next.js (App Router) + TypeScript · Supabase (Postgres, Auth via `@supabase/ssr
 
 ### 6.1 Public site
 
+The public site is a **single-scroll page** with these sections in order: hero, about, projects, experience, education, certifications, skills, GitHub activity, testimonials, blog, contact.
+
 - **Home / hero** — clear value proposition (who you are, what you do), primary CTA (contact / view work), links to GitHub + LinkedIn, resume PDF download.
 - **About** — background, skills, short narrative.
 - **Projects** — list of featured work and a detail page per project (problem → approach → tech stack → outcome → live link + repo). Presented as case studies, not bare screenshots.
@@ -75,34 +77,30 @@ Next.js (App Router) + TypeScript · Supabase (Postgres, Auth via `@supabase/ssr
 
 ### Color system (single source of truth, no hardcoded colors)
 
-All colors are semantic CSS variables defined **once** in `app/globals.css` (`:root` + `.dark`), wired into Tailwind. Components reference semantic tokens only (`bg-primary`, `text-muted-foreground`, …) — never raw hex or palette colors. Re-theming = editing values in that one file.
+All colors are semantic CSS variables defined **once** in `app/globals.css`, wired into Tailwind. v1 is **dark-only** (single `:root` theme, `.dark` pinned on `<html>` so shadcn `dark:` variants resolve; tokens structured so a light theme could be added later). Components reference semantic tokens only (`bg-primary`, `text-muted-foreground`, …) — never raw hex or palette colors. Re-theming = editing values in that one file.
 
-**Palette — "Indigo & Amber" (warm-neutral base):**
+**Palette — "Neo Tech Mint" (deep blue-black base, emerald/mint accents).** The exact token values are defined in **`design.md` (§4)**, which is the single source of truth; the summary below is for quick reference only.
 
-| Token | Light | Dark | Use |
-|---|---|---|---|
-| `background` | `#FAFAF9` | `#0C0A09` | Page background |
-| `foreground` | `#1C1917` | `#FAFAF9` | Primary text |
-| `card` | `#FFFFFF` | `#1C1917` | Surfaces / cards |
-| `card-foreground` | `#1C1917` | `#FAFAF9` | Text on cards |
-| `muted` | `#F5F5F4` | `#292524` | Subtle fills |
-| `muted-foreground` | `#78716C` | `#A8A29E` | Secondary text |
-| `border` | `#E7E5E4` | `#292524` | Borders / inputs |
-| `primary` | `#4F46E5` | `#818CF8` | CTAs, links, active state |
-| `primary-foreground` | `#FFFFFF` | `#1C1917` | Text on primary |
-| `accent` | `#F59E0B` | `#FBBF24` | Highlights (sparing) |
-| `accent-foreground` | `#1C1917` | `#1C1917` | Text on accent |
-| `ring` | `#4F46E5` | `#818CF8` | Focus rings |
-| `success` | `#16A34A` | `#4ADE80` | Success / offer |
-| `info` | `#0284C7` | `#38BDF8` | Info / screening |
-| `warning` | `#D97706` | `#FBBF24` | Warning |
-| `destructive` | `#DC2626` | `#F87171` | Errors / rejected |
+| Token | Value | Use |
+|---|---|---|
+| `background` | `#0B1120` | Page background |
+| `foreground` | `#F8FAFC` | Primary text |
+| `card` | `#111827` | Surfaces / cards |
+| `primary` | `#10B981` | Emerald — CTAs, links, active state |
+| `secondary` | `#34D399` | Mint — second accent |
+| `muted-foreground` | `#94A3B8` | Secondary text |
+| `border` | `#1F2937` | Borders / inputs |
+| `data-neutral` | `#475569` | Neutral data segment |
+| `success` | — | Success / offer |
+| `info` | — | Info / screening |
+| `warning` | — | Warning |
+| `destructive` | — | Errors / rejected |
 
-**Job-tracker status → token:** applied = `muted-foreground` · screening = `info` · interview = `accent` · offer = `success` · rejected = `destructive` · ghosted = `muted-foreground`.
+**Job-tracker status → token:** applied = `muted-foreground` · screening = `info` · interview = `secondary` · offer = `success` · rejected = `destructive` · ghosted = `neutral`.
 
 ### Other design requirements
 
-- Light + dark mode, both fully supported.
+- Dark-only for v1 (tokens structured so a light theme can be added later).
 - Fully responsive, mobile-first (recruiters often open links on phones).
 - Accessible: semantic HTML, alt text, keyboard navigation, WCAG AA contrast.
 - Consistent shadcn/ui component usage; clean, modern, uncluttered.
@@ -140,6 +138,6 @@ All colors are semantic CSS variables defined **once** in `app/globals.css` (`:r
 
 ## 11. Success criteria
 
-- Public site live on a custom domain, Lighthouse 90+, mobile-friendly, light/dark.
+- Public site live on a custom domain, Lighthouse 90+, mobile-friendly, dark-only (v1).
 - Owner can publish a blog post and add a project entirely from the admin, no code changes.
 - Job tracker fully replaces the Excel sheet, with its data confirmed unreachable from the public API.

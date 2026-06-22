@@ -107,7 +107,7 @@ export default async function ProjectDetailPage({ params }: Params) {
           className="mt-8 aspect-[16/9] w-full rounded-xl object-cover"
         />
       ) : (
-        <div className="from-primary/15 via-muted to-accent/15 mt-8 aspect-[16/9] w-full rounded-xl bg-gradient-to-br" />
+        <div className="from-primary/15 via-muted to-accent/15 mt-8 aspect-[16/9] w-full rounded-xl bg-linear-to-br" />
       )}
 
       {project.description ? (

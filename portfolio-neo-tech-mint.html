@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashiqur Rahman Shohan — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+<style>
+/* ===== palette — single source of truth (Neo Tech Mint; cyan retired for mint) ===== */
+:root{--bg:#0B1120;--band:#0E1A2D;--card:#111827;--card-2:#0E1626;--primary:#10B981;--secondary:#34D399;--text:#F8FAFC;--muted:#94A3B8;--border:#1F2937;--neutral:#475569;--on-accent:#04140D;--display:'Space Grotesk',sans-serif;--body:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;--max:1080px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+section{padding:72px 0}
+.alt{background:var(--band)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-size:14px;font-weight:600;padding:12px 20px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:transform .15s,border-color .15s}
+.btn-primary{background:var(--primary);color:var(--on-accent)}.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{border-color:var(--border);color:var(--text)}.btn-ghost:hover{border-color:var(--primary)}
+.tag{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:3px 9px;white-space:nowrap}
+*:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
+.sec-head{margin-bottom:38px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--primary)}
+.sec-head .row{display:flex;align-items:center;gap:18px;margin-top:10px}
+.sec-head h2{font-family:var(--display);font-size:clamp(26px,4vw,38px);font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.sec-head .rule{flex:1;height:1px;background:var(--border)}
+
+/* ===== nav ===== */
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--border)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font-family:var(--display);font-weight:600;font-size:17px}.brand span{color:var(--primary)}
+.navlinks{display:flex;align-items:center;gap:24px;font-size:14px;color:var(--muted)}
+.navlinks a:hover{color:var(--text)}
+.navlinks .nav-cta{border:1px solid var(--border);color:var(--text);padding:7px 15px;border-radius:8px;font-weight:600;transition:border-color .15s}
+.navlinks .nav-cta:hover{border-color:var(--primary);color:var(--primary)}
+.nav-toggle{display:none;background:none;border:1px solid var(--border);border-radius:8px;width:40px;height:40px;color:var(--text);cursor:pointer;place-items:center}
+.nav-toggle .ic-x{display:none}
+nav.open .nav-toggle .ic-bars{display:none}nav.open .nav-toggle .ic-x{display:block}
+
+/* ===== hero (name-led) ===== */
+.hero{padding:66px 0 50px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.hero .pre{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:14px;display:inline-flex;align-items:center;gap:8px}
+.hero h1{font-family:var(--display);font-size:clamp(38px,5.6vw,60px);font-weight:700;line-height:1.02;letter-spacing:-.02em}
+.hero .role{font-family:var(--display);font-size:clamp(18px,2.4vw,22px);font-weight:500;color:var(--primary);margin-top:8px}
+.hero p.lede{color:var(--muted);font-size:16px;max-width:440px;margin:16px 0 26px}
+.hero-cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 22%,transparent)}
+.socials{display:flex;gap:14px;margin-top:22px}
+.socials a{width:38px;height:38px;border:1px solid var(--border);border-radius:9px;display:grid;place-items:center;color:var(--muted);transition:.15s}
+.socials a:hover{color:var(--primary);border-color:var(--primary)}
+.portrait{position:relative;aspect-ratio:1/1;display:grid;place-items:center}
+.orbit{position:absolute;inset:0;border-radius:50%;border:1px solid var(--primary);opacity:.25}
+.orbit.two{inset:6%;border-color:var(--secondary);opacity:.4}
+.glow{position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--primary) 30%,transparent),transparent 65%)}
+.photo{position:relative;width:74%;aspect-ratio:4/5;border-radius:18px;background:linear-gradient(160deg,var(--card),var(--band));border:1px solid var(--border);overflow:hidden;display:grid;place-items:center}
+.photo svg{width:46%;opacity:.5;color:var(--muted)}
+.photo .note{position:absolute;bottom:12px;left:12px;font-family:var(--mono);font-size:10px;color:var(--muted);background:color-mix(in srgb,var(--bg) 60%,transparent);border:1px solid var(--border);padding:3px 8px;border-radius:6px}
+.bracket{position:absolute;font-family:var(--mono);color:var(--secondary);opacity:.5;font-size:42px}
+.bracket.l{left:-6px}.bracket.r{right:-6px}
+
+/* ===== about ===== */
+.about p.body{color:var(--muted);font-size:16px;max-width:700px;margin-bottom:26px}
+.svc-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:22px}
+.svc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.svc .ic{color:var(--primary);margin-bottom:10px;display:inline-flex}
+.svc h4{font-family:var(--display);font-size:16px;font-weight:600}
+.svc p{font-size:13px;color:var(--muted);margin-top:4px}
+.about .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.stat{background:var(--card-2);border:1px solid var(--border);border-radius:14px;padding:18px}
+.stat .n{font-family:var(--display);font-size:32px;font-weight:700}.stat .n i{color:var(--secondary);font-style:normal}
+.stat .l{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* ===== projects ===== */
+.featured{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center;margin-bottom:34px}
+.featured .shot{aspect-ratio:16/10;border-radius:16px;position:relative;border:1px solid var(--border);overflow:hidden}
+.featured .shot .label{position:absolute;left:12px;bottom:12px;font-family:var(--mono);font-size:10px;color:var(--text);background:color-mix(in srgb,var(--bg) 55%,transparent);border:1px solid var(--border);padding:3px 8px;border-radius:6px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);border:1px solid var(--border);border-radius:999px;padding:4px 11px;margin-bottom:14px}
+.featured h3{font-family:var(--display);font-size:26px;font-weight:600}
+.featured .tags{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 14px}
+.featured p{color:var(--muted);font-size:14px;margin-bottom:20px}
+.featured .links{display:flex;gap:14px}
+.featured .links a.gh{background:var(--primary);color:var(--on-accent);font-size:13px;font-weight:600;padding:10px 16px;border-radius:9px}
+.featured .links a.demo{font-size:13px;font-weight:600;color:var(--secondary);display:inline-flex;align-items:center;gap:6px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.filter{font-family:var(--mono);font-size:13px;color:var(--muted);border:1px solid var(--border);background:transparent;border-radius:999px;padding:7px 16px;cursor:pointer;transition:.15s}
+.filter:hover{color:var(--text)}
+.filter.active{background:var(--primary);color:var(--on-accent);border-color:var(--primary)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform .18s,border-color .18s}
+.pcard:hover{transform:translateY(-4px);border-color:var(--primary)}
+.pcard.hide{display:none}
+.pcard .shot{aspect-ratio:16/10;position:relative}
+.pcard .shot .label{position:absolute;left:12px;bottom:12px;font-family:var(--mono);font-size:10px;color:var(--text);background:color-mix(in srgb,var(--bg) 55%,transparent);border:1px solid var(--border);padding:3px 8px;border-radius:6px}
+.pcard .body{padding:16px}
+.pcard h3{font-family:var(--display);font-size:18px;font-weight:600}
+.pcard .tags{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 12px}
+.pcard p{color:var(--muted);font-size:13px;margin-bottom:14px}
+.pcard .links{display:flex;gap:14px;font-size:13px;font-weight:600}
+.pcard .links a.gh{color:var(--primary)}.pcard .links a.demo{color:var(--secondary)}
+
+/* ===== experience ===== */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--border)}
+.tl-item{position:relative;padding:0 0 28px}.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:"";position:absolute;left:-27px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px var(--bg)}
+.tl-item .when{font-family:var(--mono);font-size:12px;color:var(--secondary)}
+.tl-item h4{font-family:var(--display);font-size:17px;font-weight:600;margin-top:2px}.tl-item h4 span{color:var(--muted);font-family:var(--body);font-weight:400}
+.tl-item p{color:var(--muted);font-size:14px;margin:5px 0 8px}
+
+/* ===== education ===== */
+.edu{display:flex;gap:18px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.edu .ic{width:50px;height:50px;border-radius:12px;border:1px solid var(--border);display:grid;place-items:center;color:var(--primary);flex:none}
+.edu h4{font-family:var(--display);font-size:18px;font-weight:600}
+.edu .meta{font-family:var(--mono);font-size:12px;color:var(--secondary);margin:4px 0 8px}
+.edu p{color:var(--muted);font-size:14px;max-width:620px}
+
+/* ===== certifications ===== */
+.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cert{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;gap:14px;align-items:flex-start}
+.cert .ic{color:var(--primary);flex:none;margin-top:2px}
+.cert h4{font-family:var(--display);font-size:15px;font-weight:600;line-height:1.3}
+.cert .iss{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:5px}
+
+/* ===== skills (grouped) ===== */
+.skill-groups{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.sgroup{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.sgroup h4{font-family:var(--display);font-size:14px;font-weight:600;letter-spacing:.02em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sgroup h4::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--primary)}
+.sitems{display:flex;flex-wrap:wrap;gap:10px}
+.sitem{display:inline-flex;align-items:center;gap:8px;background:var(--card-2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;color:var(--text);transition:.15s}
+.sitem:hover{border-color:var(--primary)}
+.sitem i{font-size:18px;color:var(--muted)}
+
+/* ===== github ===== */
+.gh-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
+.gh-tile{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+.gh-tile .n{font-family:var(--display);font-size:26px;font-weight:700}
+.gh-tile .l{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.gh-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.contrib{display:flex;gap:3px}.contrib .col{display:flex;flex-direction:column;gap:3px;flex:1}
+.contrib span{width:100%;aspect-ratio:1;border-radius:2px;background:var(--primary)}
+.legend{display:flex;align-items:center;gap:6px;justify-content:flex-end;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px}
+.legend i{width:11px;height:11px;border-radius:2px;background:var(--primary);display:inline-block}
+.langbar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:18px}
+.langs{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.langs span{display:inline-flex;align-items:center;gap:6px}.lgd{width:9px;height:9px;border-radius:50%}
+
+/* ===== testimonials ===== */
+.quotes{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.quote{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.quote p{font-size:15px;margin-bottom:16px}
+.quote .who{display:flex;align-items:center;gap:12px}
+.quote .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:grid;place-items:center;font-family:var(--display);font-weight:600;color:var(--on-accent);font-size:14px}
+.quote .who b{font-size:14px}.quote .who small{color:var(--muted);display:block;font-size:12px}
+
+/* ===== blog ===== */
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.bcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:transform .18s,border-color .18s}
+.bcard:hover{transform:translateY(-4px);border-color:var(--primary)}
+.bcard .meta{display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:12px}
+.bcard .meta .pill{color:var(--primary);border:1px solid var(--border);border-radius:6px;padding:2px 8px}
+.bcard h3{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.3}
+.bcard p{color:var(--muted);font-size:13px;margin:8px 0 14px}
+.bcard a.read{font-size:13px;font-weight:600;color:var(--secondary)}
+
+/* ===== contact (form + details) ===== */
+.contact .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.contact h2{font-family:var(--display);font-size:clamp(30px,5vw,46px);font-weight:700;line-height:1.05}
+.contact h2 .g{color:var(--primary)}
+.contact p{color:var(--muted);margin:14px 0 24px}
+.cdetails{display:flex;flex-direction:column;gap:14px}
+.cdetail{display:flex;align-items:center;gap:12px;font-size:14px}
+.cdetail .ic{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);display:grid;place-items:center;color:var(--primary);flex:none}
+.cdetail small{display:block;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.field{margin-bottom:16px}
+.field label{font-family:var(--mono);font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+.field input,.field textarea{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--body);font-size:14px}
+.field input:focus,.field textarea:focus{border-color:var(--primary);outline:none}
+
+/* ===== footer ===== */
+footer{border-top:1px solid var(--border);padding:30px 0}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.brand-f{font-family:var(--display);font-weight:600}.brand-f span{color:var(--primary)}
+footer p{font-size:13px;color:var(--muted)}
+.fsoc{display:flex;gap:12px}
+.fsoc a{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;color:var(--muted);transition:.15s}
+.fsoc a:hover{color:var(--primary);border-color:var(--primary)}
+
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero h1,.hero .role,.hero .lede,.hero-cta,.portrait{animation:up .7s both}
+.hero .role{animation-delay:.05s}.hero .lede{animation-delay:.1s}.hero-cta{animation-delay:.16s}.portrait{animation-delay:.1s}
+
+@media(max-width:860px){
+  .hero .wrap,.featured,.contact .wrap{grid-template-columns:1fr}
+  .featured .visual{order:-1}
+  .svc-row,.about .stats,.cert-grid,.skill-groups,.quotes{grid-template-columns:1fr}
+  .gh-tiles{grid-template-columns:repeat(2,1fr)}
+  .portrait{max-width:320px;margin:0 auto}
+  .nav-toggle{display:grid}
+  .navlinks{position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);border-bottom:1px solid var(--border);padding:8px 24px 18px;display:none;box-shadow:0 14px 28px rgba(0,0,0,.35)}
+  nav.open .navlinks{display:flex}
+  .navlinks a{padding:13px 2px;border-bottom:1px solid var(--border)}
+  .navlinks a:last-child{border-bottom:none}
+  .navlinks .nav-cta{margin-top:12px;text-align:center;border:1px solid var(--primary);color:var(--primary)}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav id="nav"><div class="wrap">
+  <div class="brand">ashiqur<span>.dev</span></div>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
+    <svg class="ic-bars" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    <svg class="ic-x" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <div class="navlinks" id="navlinks">
+    <a href="#about">About</a><a href="#work">Projects</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#blog">Blog</a><a href="#contact">Contact</a>
+    <a class="nav-cta" href="#">Résumé</a>
+  </div>
+</div></nav>
+
+<!-- HERO (name-led) -->
+<header class="hero"><div class="wrap">
+  <div>
+    <div class="pre"><span class="dot"></span>Available for freelance &amp; full-time</div>
+    <h1>Ashiqur Rahman Shohan</h1>
+    <div class="role">Full-stack Software Engineer</div>
+    <p class="lede">I build and ship production web &amp; mobile apps — from real-estate platforms to ERP systems with daily financial reporting.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#contact">Get in touch</a>
+      <a class="btn btn-ghost" href="#">Resume</a>
+    </div>
+    <div class="socials">
+      <a href="#" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2z"/></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg></a>
+      <a href="#" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+    </div>
+  </div>
+  <div class="portrait">
+    <div class="orbit"></div><div class="orbit two"></div><div class="glow"></div>
+    <span class="bracket l">&lt;</span><span class="bracket r">/&gt;</span>
+    <!-- Replace .photo contents with your real photo -->
+    <div class="photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span class="note">your photo here</span></div>
+  </div>
+</div></header>
+
+<!-- ABOUT (short) -->
+<section class="alt about" id="about"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">About me</div><div class="row"><h2>From statistics to shipping software</h2><div class="rule"></div></div></div>
+  <p class="body">I started in statistics and taught myself to build. Since then I've shipped real products across web and mobile, and I care about clean architecture, reliable delivery, and tools people actually use.</p>
+  <div class="svc-row">
+    <div class="svc"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M9 9l-2 2 2 2M15 9l2 2-2 2"/></svg></span><h4>Website Development</h4><p>Production web apps with Laravel, Django &amp; React.</p></div>
+    <div class="svc"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span><h4>App Development</h4><p>Cross-platform mobile builds with React Native.</p></div>
+    <div class="svc"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.5A4 4 0 0 1 18 17z"/></svg></span><h4>APIs &amp; Backends</h4><p>Clean, documented REST APIs and data models.</p></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">15<i>+</i></div><div class="l">projects shipped</div></div>
+    <div class="stat"><div class="n">3<i>+</i></div><div class="l">production systems</div></div>
+    <div class="stat"><div class="n">100<i>%</i></div><div class="l">remote-ready</div></div>
+  </div>
+</div></section>
+
+<!-- PROJECTS (featured + filterable grid) -->
+<section id="work"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">Selected work</div><div class="row"><h2>Projects</h2><div class="rule"></div></div></div>
+  <!-- Featured -->
+  <div class="featured">
+    <div class="visual"><div class="shot" style="background:linear-gradient(135deg,var(--card-2),var(--primary))"><span class="label">screenshot</span></div></div>
+    <div>
+      <span class="badge">★ Featured</span>
+      <h3>Estate-Link</h3>
+      <div class="tags"><span class="tag">Laravel</span><span class="tag">React Native</span><span class="tag">MySQL</span></div>
+      <p>A multi-platform real-estate system spanning web and mobile — property listings, search and filtering, agent dashboards, and an admin back office. Built end to end and shipped to production.</p>
+      <div class="links"><a class="gh" href="#">View GitHub</a><a class="demo" href="#">View project →</a></div>
+    </div>
+  </div>
+  <!-- All projects -->
+  <div class="filters" id="filters">
+    <button class="filter active" data-filter="all">All</button>
+    <button class="filter" data-filter="web">Web</button>
+    <button class="filter" data-filter="mobile">Mobile</button>
+    <button class="filter" data-filter="api">API</button>
+  </div>
+  <div class="pgrid" id="projects"></div>
+</div></section>
+
+<!-- EXPERIENCE -->
+<section class="alt" id="experience"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">Career</div><div class="row"><h2>Experience</h2><div class="rule"></div></div></div>
+  <div class="timeline">
+    <div class="tl-item"><div class="when">2026 — now</div><h4>Junior Software Engineer <span>· Company</span></h4><p>Building and shipping full-stack features across web and mobile, from API design to UI.</p><div style="display:flex;gap:7px"><span class="tag">Laravel</span><span class="tag">React</span></div></div>
+    <div class="tl-item"><div class="when">2025</div><h4>Software Engineer Intern <span>· Company</span></h4><p>Contributed to production applications and internal tooling alongside the engineering team.</p><div style="display:flex;gap:7px"><span class="tag">Django</span><span class="tag">React</span></div></div>
+  </div>
+</div></section>
+
+<!-- EDUCATION -->
+<section id="education"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">Education</div><div class="row"><h2>Where it started</h2><div class="rule"></div></div></div>
+  <!-- TODO: replace university name and years with your real details -->
+  <div class="edu">
+    <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg></span>
+    <div>
+      <h4>B.Sc. in Statistics</h4>
+      <div class="meta">University name · 2020 — 2024</div>
+      <p>A foundation in statistics, probability, and data analysis — where my analytical thinking and love of solving problems with logic and data began, and what set up my move into software.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- CERTIFICATIONS / ACHIEVEMENTS -->
+<section class="alt" id="certs"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">Credentials</div><div class="row"><h2>Certifications &amp; achievements</h2><div class="rule"></div></div></div>
+  <!-- TODO: replace with your real certificates / awards -->
+  <div class="cert-grid">
+    <div class="cert"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg></span><div><h4>Meta Back-End Developer</h4><div class="iss">Coursera · 2025</div></div></div>
+    <div class="cert"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg></span><div><h4>JavaScript Algorithms &amp; Data Structures</h4><div class="iss">freeCodeCamp · 2024</div></div></div>
+    <div class="cert"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg></span><div><h4>Responsive Web Design</h4><div class="iss">freeCodeCamp · 2023</div></div></div>
+  </div>
+</div></section>
+
+<!-- SKILLS (grouped) -->
+<section id="skills"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">Tech stack</div><div class="row"><h2>Skills</h2><div class="rule"></div></div></div>
+  <div class="skill-groups" id="skills-groups"></div>
+</div></section>
+
+<!-- GITHUB (compact strip) -->
+<section class="alt" id="activity"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">Open source</div><div class="row"><h2>GitHub activity</h2><div class="rule"></div></div></div>
+  <div class="gh-tiles">
+    <div class="gh-tile"><div class="n">1,240</div><div class="l">contributions</div></div>
+    <div class="gh-tile"><div class="n">64</div><div class="l">stars earned</div></div>
+    <div class="gh-tile"><div class="n">18d</div><div class="l">current streak</div></div>
+    <div class="gh-tile"><div class="n">28</div><div class="l">repositories</div></div>
+  </div>
+  <div class="gh-card">
+    <div class="contrib" id="contrib"></div>
+    <div class="legend">Less <i style="opacity:.2"></i><i style="opacity:.45"></i><i style="opacity:.72"></i><i style="opacity:1"></i> More</div>
+    <div class="langbar"><div style="width:36%;background:var(--primary)"></div><div style="width:27%;background:var(--secondary)"></div><div style="width:21%;background:var(--muted)"></div><div style="width:16%;background:var(--neutral)"></div></div>
+    <div class="langs">
+      <span><span class="lgd" style="background:var(--primary)"></span>TypeScript 36%</span>
+      <span><span class="lgd" style="background:var(--secondary)"></span>PHP 27%</span>
+      <span><span class="lgd" style="background:var(--muted)"></span>Python 21%</span>
+      <span><span class="lgd" style="background:var(--neutral)"></span>JavaScript 16%</span>
+    </div>
+  </div>
+</div></section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">Feedback</div><div class="row"><h2>Kind words</h2><div class="rule"></div></div></div>
+  <div class="quotes">
+    <div class="quote"><p>"Ashiqur shipped our real-estate platform end to end and was a pleasure to work with — reliable and detail-oriented."</p><div class="who"><span class="av">MR</span><div><b>Maya R.</b><small>Product Lead</small></div></div></div>
+    <div class="quote"><p>"Took our messy requirements and turned them into a clean, working ERP. Communicates clearly and delivers."</p><div class="who"><span class="av">TK</span><div><b>Tanvir K.</b><small>Founder</small></div></div></div>
+  </div>
+</div></section>
+
+<!-- BLOG -->
+<section class="alt" id="blog"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">Writing</div><div class="row"><h2>From the blog</h2><div class="rule"></div></div></div>
+  <div class="bgrid" id="blog-list"></div>
+</div></section>
+
+<!-- CONTACT (form + details) -->
+<section class="contact" id="contact"><div class="wrap">
+  <div>
+    <div class="eyebrow">Contact</div>
+    <h2>Have a project?<br><span class="g">Let's talk!</span></h2>
+    <p>Open to freelance work and full-time roles. Reach out and I'll get back to you within a day.</p>
+    <div class="cdetails">
+      <div class="cdetail"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><small>Email</small>hello@ashiqur.dev</div></div>
+      <div class="cdetail"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><small>Location</small>Dhaka, Bangladesh</div></div>
+      <div class="cdetail"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><small>Availability</small>Open now · GMT+6</div></div>
+    </div>
+  </div>
+  <form onsubmit="return false">
+    <div class="field"><label>Name</label><input type="text" placeholder="Your name"></div>
+    <div class="field"><label>Email</label><input type="email" placeholder="you@email.com"></div>
+    <div class="field"><label>Message</label><textarea rows="5" placeholder="Tell me about it"></textarea></div>
+    <button class="btn btn-primary" type="submit">Send message</button>
+  </form>
+</section>
+
+<footer><div class="wrap">
+  <span class="brand-f">ashiqur<span>.dev</span></span>
+  <p>Designed &amp; built by Ashiqur Rahman Shohan · 2026</p>
+  <div class="fsoc">
+    <a href="#" aria-label="GitHub"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2z"/></svg></a>
+    <a href="#" aria-label="LinkedIn"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg></a>
+    <a href="#" aria-label="Email"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+  </div>
+</div></footer>
+
+<script>
+/* mobile nav toggle */
+(function(){var nav=document.getElementById('nav'),nt=document.getElementById('navToggle'),nl=document.getElementById('navlinks');
+nt.addEventListener('click',function(){var o=nav.classList.toggle('open');nt.setAttribute('aria-expanded',o);nt.setAttribute('aria-label',o?'Close menu':'Open menu');});
+nl.addEventListener('click',function(e){if(e.target.closest('a')){nav.classList.remove('open');nt.setAttribute('aria-expanded','false');}});})();
+/* grouped skills (real stack from resume) */
+var groups=[
+ {g:'Frontend',items:[['React','devicon-react-original'],['Next.js','devicon-nextjs-original'],['TypeScript','devicon-typescript-plain'],['JavaScript','devicon-javascript-plain'],['Redux','devicon-redux-original'],['Tailwind','devicon-tailwindcss-original'],['HTML5','devicon-html5-plain'],['CSS3','devicon-css3-plain']]},
+ {g:'Backend',items:[['PHP','devicon-php-plain'],['Laravel','devicon-laravel-plain'],['Python','devicon-python-plain'],['Django','devicon-django-plain']]},
+ {g:'Database',items:[['MySQL','devicon-mysql-original'],['PostgreSQL','devicon-postgresql-plain'],['Supabase','devicon-supabase-plain']]},
+ {g:'Tools',items:[['Git','devicon-git-plain'],['GitHub','devicon-github-original'],['React Native','devicon-react-original'],['Docker','devicon-docker-plain'],['Jest','devicon-jest-plain']]}
+];
+document.getElementById('skills-groups').innerHTML=groups.map(function(grp){
+ return '<div class="sgroup"><h4>'+grp.g+'</h4><div class="sitems">'+grp.items.map(function(it){return '<span class="sitem"><i class="'+it[1]+'"></i>'+it[0]+'</span>';}).join('')+'</div></div>';
+}).join('');
+
+/* projects + filter */
+var projects=[
+ {n:'Estate-Link',cat:['web','mobile'],d:'Multi-platform real-estate system across web and mobile — listings, search, and agent dashboards.',t:['Laravel','React Native','MySQL'],g:'linear-gradient(135deg,var(--card-2),var(--primary))'},
+ {n:'Salon-ERP',cat:['web'],d:'ERP with daily financial reporting, inventory, and staff scheduling.',t:['Laravel','MySQL'],g:'linear-gradient(135deg,var(--card-2),var(--secondary))'},
+ {n:'PM-Internal',cat:['web'],d:'Internal project-management tool with boards, tasks, and team activity.',t:['React','Supabase'],g:'linear-gradient(135deg,var(--card-2),var(--primary))'},
+ {n:'Shop-API',cat:['api'],d:'E-commerce backend: catalog, cart, orders, and payment hooks with a documented REST API.',t:['Django','DRF','PostgreSQL'],g:'linear-gradient(135deg,var(--card-2),var(--secondary))'}
+];
+document.getElementById('projects').innerHTML=projects.map(function(p){
+ return '<article class="pcard" data-cat="'+p.cat.join(' ')+'"><div class="shot" style="background:'+p.g+'"><span class="label">screenshot</span></div><div class="body"><h3>'+p.n+'</h3><div class="tags">'+p.t.map(function(x){return '<span class="tag">'+x+'</span>';}).join('')+'</div><p>'+p.d+'</p><div class="links"><a class="gh" href="#">GitHub</a><a class="demo" href="#">Live →</a></div></div></article>';
+}).join('');
+document.getElementById('filters').addEventListener('click',function(e){
+ if(!e.target.classList.contains('filter'))return;
+ document.querySelectorAll('.filter').forEach(function(b){b.classList.remove('active')});
+ e.target.classList.add('active');
+ var f=e.target.dataset.filter;
+ document.querySelectorAll('.pcard').forEach(function(c){c.classList.toggle('hide',!(f==='all'||c.dataset.cat.split(' ').indexOf(f)>-1))});
+});
+
+/* blog (placeholder posts) */
+var posts=[
+ {t:'Building a CMS blog with Next.js and Supabase',date:'Jun 2026',tag:'Next.js',e:'How I wired a block editor, server-rendered HTML, and Row Level Security into one clean stack.'},
+ {t:'From Laravel to Django: lessons shipping two stacks',date:'May 2026',tag:'Backend',e:'What transfers, what doesn\'t, and how I think about choosing a backend per project.'},
+ {t:'Row Level Security in Supabase, the right way',date:'Apr 2026',tag:'Supabase',e:'A practical checklist for locking down your tables before they ever reach production.'}
+];
+document.getElementById('blog-list').innerHTML=posts.map(function(b){
+ return '<article class="bcard"><div class="meta"><span>'+b.date+'</span><span class="pill">'+b.tag+'</span></div><h3>'+b.t+'</h3><p>'+b.e+'</p><a class="read" href="#">Read more →</a></article>';
+}).join('');
+
+/* compact contribution graph */
+var c='';for(var w=0;w<52;w++){c+='<div class="col">';for(var d=0;d<7;d++){var o=[.1,.1,.28,.5,.72,1][Math.floor(Math.random()*6)];c+='<span style="opacity:'+o+'"></span>';}c+='</div>';}
+document.getElementById('contrib').innerHTML=c;
+</script>
+</body>
+</html>

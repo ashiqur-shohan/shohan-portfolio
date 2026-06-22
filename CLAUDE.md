@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guidance for any AI or developer working in this repository. Read this and `PRD.md` before writing code, and follow both strictly.
+Guidance for any AI or developer working in this repository. Read this, `PRD.md`, and `design.md` before writing code, and follow all three strictly. **`design.md`** and the static mock **`portfolio-neo-tech-mint.html`** are the visual source of truth for the public site — reproduce their layout, spacing, palette, and typography faithfully.
 
 ## Project
 
@@ -16,6 +16,7 @@ Personal portfolio + private admin panel for **Ashiqur Rahman Shohan**. Two surf
 - Next.js (App Router) + TypeScript
 - Supabase: Postgres, Auth (`@supabase/ssr`), Storage
 - Tailwind CSS + shadcn/ui (lucide-react icons)
+- Fonts via `next/font`: **Space Grotesk** (display/headings), **Inter** (body/UI), **JetBrains Mono** (mono — eyebrows, labels, code)
 - React Hook Form + Zod (forms + validation)
 - BlockNote (blog editor): `@blocknote/react`, `@blocknote/mantine`, `@blocknote/code-block`, `@blocknote/server-util`
 - Resend (contact-form email)
@@ -98,11 +99,11 @@ proxy.ts     →  @supabase/ssr    (edge middleware — allowed exception)
 
 ### 1. Colors — never hardcode
 
-- Every color is a semantic CSS variable defined **once** in `src/app/globals.css` (`:root` for light, `.dark` for dark). **That file is the single source of truth for the entire palette.**
+- Every color is a semantic CSS variable defined **once** in `src/app/globals.css`. v1 is **dark-only**: a single `:root` theme, with `.dark` pinned on `<html>` so shadcn `dark:` variants resolve. Tokens are structured so a light theme could be added later, but none exists now. **That file is the single source of truth for the entire palette.**
 - Use only semantic Tailwind utilities that map to those tokens: `bg-background`, `text-foreground`, `bg-card`, `bg-primary`, `text-primary-foreground`, `bg-muted`, `text-muted-foreground`, `border-border`, `bg-accent`, `text-destructive`, etc.
-- **NEVER** write a raw hex (`#4F46E5`), an `rgb()`/`hsl()` literal, or a Tailwind palette color (`bg-indigo-600`, `text-slate-500`) inside a component. If a color you need doesn't exist as a token, **add a token** — do not inline a value.
+- **NEVER** write a raw hex, an `rgb()`/`hsl()` literal, or a Tailwind palette color (`bg-emerald-500`, `text-slate-500`) inside a component. If a color you need doesn't exist as a token, **add a token** — do not inline a value.
 - Re-theming the whole app must be possible by editing variable values in `src/app/globals.css` and nothing else.
-- The token list and values are in `PRD.md` (Design → Color system).
+- The token list and values are in `design.md` (§4).
 
 ### 2. Security — the job tracker holds real personal data
 

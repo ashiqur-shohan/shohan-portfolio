@@ -16,6 +16,7 @@ export type Project = {
   approach: string | null;
   outcome: string | null;
   tech_stack: string[];
+  categories: string[];
   cover_image_url: string | null;
   live_url: string | null;
   repo_url: string | null;

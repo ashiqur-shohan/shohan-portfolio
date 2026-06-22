@@ -9,7 +9,7 @@ export const contentType = "image/png";
 /**
  * NOTE: next/og renders with Satori, which cannot read CSS variables or
  * Tailwind classes — only inline styles with literal values. The colors below
- * intentionally mirror the PRD "dark" theme tokens in src/app/globals.css.
+ * intentionally mirror the Neo Tech Mint theme tokens in src/app/globals.css.
  */
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -21,15 +21,15 @@ export default function OpengraphImage() {
         flexDirection: "column",
         justifyContent: "center",
         padding: "80px",
-        background: "#0c0a09", // --background (dark)
-        color: "#fafaf9", // --foreground (dark)
+        background: "#0B1120", // --background (dark)
+        color: "#F8FAFC", // --foreground
       }}
     >
       <div
         style={{
           fontSize: 30,
           fontWeight: 600,
-          color: "#818cf8", // --primary (dark)
+          color: "#10B981", // --primary (emerald)
         }}
       >
         {siteConfig.role}
@@ -49,7 +49,7 @@ export default function OpengraphImage() {
           fontSize: 30,
           marginTop: 28,
           maxWidth: 820,
-          color: "#a8a29e", // --muted-foreground (dark)
+          color: "#94A3B8", // --muted-foreground (dark)
         }}
       >
         {siteConfig.tagline}

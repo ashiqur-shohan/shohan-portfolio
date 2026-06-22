@@ -64,6 +64,7 @@ export async function saveProject(
       approach: v.approach || null,
       outcome: v.outcome || null,
       tech_stack: parseTechStack(v.techStack),
+      categories: v.categories ?? [],
       live_url: v.liveUrl || null,
       repo_url: v.repoUrl || null,
       year: v.year ?? null,

@@ -1,33 +1,43 @@
 import { siteConfig } from "@/lib/site-config";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SkillIcon } from "@/components/skill-icon";
+import { Section, SectionHeader } from "@/components/sections/section";
 
 export function Skills() {
   return (
-    <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
-      <h2 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
-        Skills &amp; tools
-      </h2>
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <Section id="skills">
+      <SectionHeader eyebrow="Tech stack" title="Skills" />
+
+      {/* 2-col grid on tablet+; single column on mobile */}
+      <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2">
         {siteConfig.skills.map((group) => (
-          <Card key={group.group}>
-            <CardHeader>
-              <CardTitle className="text-base">{group.group}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-1.5">
-                {group.items.map((item) => (
-                  <Badge key={item} variant="secondary">
-                    <SkillIcon name={item} />
-                    {item}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <div
+            key={group.group}
+            className="bg-card border border-border rounded-[14px] p-5"
+          >
+            {/* Group heading with leading mint dot */}
+            <h4 className="font-display text-sm font-semibold mb-[14px] flex items-center gap-2">
+              <span className="size-[7px] rounded-full bg-primary shrink-0" />
+              {group.group}
+            </h4>
+
+            {/* Skill chips */}
+            <div className="flex flex-wrap gap-2.5">
+              {group.items.map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-2 bg-card-2 border border-border rounded-[8px] px-3 py-[7px] text-[13px] text-foreground transition hover:border-primary"
+                >
+                  <SkillIcon
+                    name={item}
+                    className="size-[18px] text-muted-foreground"
+                  />
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }

@@ -9,7 +9,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { saveProject } from "@/lib/actions/projects";
-import { projectSchema, type ProjectInput } from "@/lib/validations/project";
+import {
+  PROJECT_CATEGORIES,
+  projectSchema,
+  type ProjectCategory,
+  type ProjectInput,
+} from "@/lib/validations/project";
 import type { Project } from "@/lib/data/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +50,7 @@ export function ProjectForm({ project }: { project?: Project }) {
       approach: project?.approach ?? "",
       outcome: project?.outcome ?? "",
       techStack: project?.tech_stack?.join(", ") ?? "",
+      categories: (project?.categories ?? []) as ProjectCategory[],
       liveUrl: project?.live_url ?? "",
       repoUrl: project?.repo_url ?? "",
       year: project?.year ?? undefined,
@@ -157,6 +163,46 @@ export function ProjectForm({ project }: { project?: Project }) {
           {...register("techStack")}
         />
         <p className="text-muted-foreground text-xs">Comma-separated.</p>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Categories</Label>
+        <Controller
+          control={control}
+          name="categories"
+          render={({ field }) => {
+            const selected = (field.value ?? []) as ProjectCategory[];
+            const toggle = (value: ProjectCategory) => {
+              field.onChange(
+                selected.includes(value)
+                  ? selected.filter((v) => v !== value)
+                  : [...selected, value],
+              );
+            };
+            return (
+              <div className="flex flex-wrap gap-6">
+                {PROJECT_CATEGORIES.map((value) => (
+                  <label
+                    key={value}
+                    className="flex items-center gap-2 text-sm font-medium capitalize"
+                  >
+                    <input
+                      type="checkbox"
+                      className="border-input text-primary focus-visible:ring-ring h-4 w-4 rounded border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                      checked={selected.includes(value)}
+                      onChange={() => toggle(value)}
+                    />
+                    <span>{value}</span>
+                  </label>
+                ))}
+              </div>
+            );
+          }}
+        />
+        <FieldError message={errors.categories?.message} />
+        <p className="text-muted-foreground text-xs">
+          Used by the public All / Web / Mobile / API filter.
+        </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

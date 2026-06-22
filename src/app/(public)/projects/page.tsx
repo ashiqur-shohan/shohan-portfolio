@@ -13,9 +13,9 @@ export default async function ProjectsPage() {
   const projects = await listPublished();
 
   return (
-    <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+    <section className="mx-auto w-full max-w-[1080px] px-6 py-[72px]">
       <header className="max-w-2xl">
-        <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="font-display text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
           Projects
         </h1>
         <p className="text-muted-foreground mt-3">
@@ -25,11 +25,11 @@ export default async function ProjectsPage() {
       </header>
 
       {projects.length === 0 ? (
-        <p className="border-border bg-muted/40 text-muted-foreground mt-10 rounded-lg border p-8 text-center">
+        <p className="border-border bg-card text-muted-foreground mt-10 rounded-lg border p-8 text-center">
           Projects are coming soon.
         </p>
       ) : (
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-5">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

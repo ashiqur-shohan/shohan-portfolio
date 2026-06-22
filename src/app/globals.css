@@ -1,118 +1,75 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Class-based dark mode (driven by next-themes adding `.dark` to <html>). */
+/* Dark-only app: `.dark` is pinned on <html> in layout.tsx, so `dark:` variants
+   in the shadcn ui/* primitives resolve deterministically (not via OS setting). */
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================================
    COLOR SYSTEM — SINGLE SOURCE OF TRUTH (CLAUDE.md hard rule #1)
-   Palette: "Indigo & Amber" on a warm-neutral (stone) base — see PRD.md.
-   Light = :root, Dark = .dark. Every value is a semantic token; re-theme the
-   whole app by editing the values in THIS FILE and nothing else.
+   Palette: "Neo Tech Mint" — emerald + mint on a deep blue-black base.
+   See design.md §4 and the visual mock portfolio-neo-tech-mint.html.
 
-   Tokens marked (alias) are not listed in the PRD but are required by
-   shadcn/ui. They are mapped onto existing PRD tokens, never new colors.
+   Dark-only for v1 (the mock is dark-only). Tokens keep shadcn/ui's semantic
+   NAMES so every ui/* component and the admin inherit the palette; the single
+   theme lives in :root. Re-theme the whole app by editing the values in THIS
+   FILE and nothing else. Tokens marked (alias) satisfy shadcn and are mapped
+   onto design.md tokens, never new colors. A light theme could be re-added
+   later as a `.light` block + `@custom-variant`.
    ============================================================================ */
 :root {
   --radius: 0.625rem;
 
   /* Surfaces & text */
-  --background: #fafaf9;
-  --foreground: #1c1917;
-  --card: #ffffff;
-  --card-foreground: #1c1917;
-  --popover: #ffffff; /* (alias) → card */
-  --popover-foreground: #1c1917; /* (alias) → card-foreground */
+  --background: #0b1120; /* design --bg */
+  --foreground: #f8fafc; /* design --text */
+  --card: #111827;
+  --card-foreground: #f8fafc;
+  --popover: #111827; /* (alias) → card */
+  --popover-foreground: #f8fafc; /* (alias) → card-foreground */
+  --band: #0e1a2d; /* alternating section background */
+  --card-2: #0e1626; /* nested / stat / sitem surfaces */
 
   /* Brand */
-  --primary: #4f46e5;
-  --primary-foreground: #ffffff;
-  --accent: #f59e0b;
-  --accent-foreground: #1c1917;
+  --primary: #10b981; /* emerald */
+  --primary-foreground: #04140d; /* design --on-accent */
+  --secondary: #34d399; /* mint — second accent (design --secondary) */
+  --secondary-foreground: #04140d; /* (alias) → on-accent */
+  --accent: #131c2e; /* subtle hover surface */
+  --accent-foreground: #f8fafc;
 
-  /* Neutral fills */
-  --secondary: #f5f5f4; /* (alias) → muted */
-  --secondary-foreground: #1c1917; /* (alias) → foreground */
-  --muted: #f5f5f4;
-  --muted-foreground: #78716c;
-
-  /* Lines & inputs */
-  --border: #e7e5e4;
-  --input: #e7e5e4; /* (alias) → border */
-  --ring: #4f46e5;
-
-  /* Status */
-  --destructive: #dc2626;
-  --destructive-foreground: #ffffff; /* (alias) */
-  --success: #16a34a;
-  --success-foreground: #ffffff; /* (alias) */
-  --info: #0284c7;
-  --info-foreground: #ffffff; /* (alias) */
-  --warning: #d97706;
-  --warning-foreground: #ffffff; /* (alias) */
-  --warning-strong: #b45309; /* readable warning text on light surfaces (AA) */
-
-  /* Blog code syntax highlighting (highlight.js, .post-body) — light */
-  --code-bg: #f5f5f4;
-  --code-fg: #1c1917;
-  --code-comment: #78716c;
-  --code-keyword: #7c3aed;
-  --code-string: #15803d;
-  --code-number: #b45309;
-  --code-function: #0369a1;
-  --code-builtin: #4f46e5;
-  --code-variable: #9a3412;
-  --code-punctuation: #57534e;
-}
-
-.dark {
-  /* Surfaces & text */
-  --background: #0c0a09;
-  --foreground: #fafaf9;
-  --card: #1c1917;
-  --card-foreground: #fafaf9;
-  --popover: #1c1917; /* (alias) → card */
-  --popover-foreground: #fafaf9; /* (alias) → card-foreground */
-
-  /* Brand */
-  --primary: #818cf8;
-  --primary-foreground: #1c1917;
-  --accent: #fbbf24;
-  --accent-foreground: #1c1917;
-
-  /* Neutral fills */
-  --secondary: #292524; /* (alias) → muted */
-  --secondary-foreground: #fafaf9; /* (alias) → foreground */
-  --muted: #292524;
-  --muted-foreground: #a8a29e;
+  /* Neutral fills & text */
+  --muted: #0e1626; /* subtle surface fill */
+  --muted-foreground: #94a3b8; /* design --muted: secondary text / labels */
+  --neutral: #475569; /* data segment (e.g. 4th language bar) */
 
   /* Lines & inputs */
-  --border: #292524;
-  --input: #292524; /* (alias) → border */
-  --ring: #818cf8;
+  --border: #1f2937;
+  --input: #1f2937; /* (alias) → border */
+  --ring: #10b981; /* focus = primary */
 
-  /* Status */
+  /* Status (admin job tracker, errors) */
   --destructive: #f87171;
-  --destructive-foreground: #1c1917; /* (alias) */
-  --success: #4ade80;
-  --success-foreground: #1c1917; /* (alias) */
-  --info: #38bdf8;
-  --info-foreground: #1c1917; /* (alias) */
-  --warning: #fbbf24;
-  --warning-foreground: #1c1917; /* (alias) */
-  --warning-strong: #fbbf24; /* dark mode already has high contrast */
+  --destructive-foreground: #0b1120; /* (alias) */
+  --success: #4ade80; /* offer */
+  --success-foreground: #04140d; /* (alias) */
+  --info: #38bdf8; /* screening */
+  --info-foreground: #04140d; /* (alias) */
+  --warning: #fbbf24; /* follow-up due */
+  --warning-foreground: #04140d; /* (alias) */
+  --warning-strong: #fbbf24; /* dark surface already has high contrast */
 
-  /* Blog code syntax highlighting (highlight.js, .post-body) — dark */
-  --code-bg: #1c1917;
-  --code-fg: #fafaf9;
-  --code-comment: #a8a29e;
-  --code-keyword: #c4b5fd;
-  --code-string: #4ade80;
+  /* Blog code syntax highlighting (highlight.js, .post-body) */
+  --code-bg: #0e1626;
+  --code-fg: #f8fafc;
+  --code-comment: #94a3b8;
+  --code-keyword: #34d399;
+  --code-string: #10b981;
   --code-number: #fbbf24;
   --code-function: #38bdf8;
-  --code-builtin: #818cf8;
-  --code-variable: #fdba74;
-  --code-punctuation: #a8a29e;
+  --code-builtin: #34d399;
+  --code-variable: #f8fafc;
+  --code-punctuation: #94a3b8;
 }
 
 /* Map the tokens above into Tailwind's theme. `inline` keeps utilities pointing
@@ -124,12 +81,15 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+  --color-band: var(--band);
+  --color-card-2: var(--card-2);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-data-neutral: var(--neutral); /* avoids clashing with Tailwind's neutral-* scale */
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
@@ -145,8 +105,10 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Display = Space Grotesk · Body = Inter · Mono = JetBrains Mono (design.md §4.2) */
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -158,8 +120,41 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Visible focus ring for bare interactive elements (mock §4.4). shadcn ui/*
+     components set their own `outline-none` + ring utility, which wins over this
+     base rule, so they are unaffected. */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+}
+
+/* Motion (mock §4.4 quality floor): fade-up on load, gated by reduced-motion.
+   Use via the arbitrary utility `animate-[up_0.7s_both]`. */
+@keyframes up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
 }
 

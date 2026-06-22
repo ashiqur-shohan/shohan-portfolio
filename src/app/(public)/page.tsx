@@ -1,17 +1,29 @@
-import { ContactCta } from "@/components/sections/contact-cta";
-import { FeaturedProjects } from "@/components/sections/featured-projects";
 import { Hero } from "@/components/sections/hero";
-import { LatestPosts } from "@/components/sections/latest-posts";
+import { About } from "@/components/sections/about";
+import { Projects } from "@/components/sections/projects";
+import { Experience } from "@/components/sections/experience";
+import { Education } from "@/components/sections/education";
+import { Certifications } from "@/components/sections/certifications";
 import { Skills } from "@/components/sections/skills";
+import { GithubActivity } from "@/components/sections/github-activity";
+import { Testimonials } from "@/components/sections/testimonials";
+import { LatestPosts } from "@/components/sections/latest-posts";
+import { Contact } from "@/components/sections/contact";
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <FeaturedProjects />
-      <LatestPosts />
+      <About />
+      <Projects />
+      <Experience />
+      <Education />
+      <Certifications />
       <Skills />
-      <ContactCta />
+      <GithubActivity />
+      <Testimonials />
+      <LatestPosts />
+      <Contact />
     </>
   );
 }

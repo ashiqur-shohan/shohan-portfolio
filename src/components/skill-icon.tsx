@@ -1,11 +1,15 @@
 import type { ComponentType } from "react";
 import { Code2, Database, Webhook } from "lucide-react";
 import {
+  SiCss as SiCss3,
   SiDigitalocean,
   SiDjango,
+  SiDocker,
   SiGit,
   SiGithub,
+  SiHtml5,
   SiJavascript,
+  SiJest,
   SiLaravel,
   SiLinux,
   SiMysql,
@@ -33,6 +37,7 @@ type IconComponent = ComponentType<{ className?: string }>;
  * brand color (CLAUDE.md hard rule #1). Unmapped names get a neutral fallback.
  */
 const SKILL_ICONS: Record<string, IconComponent> = {
+  // existing entries — unchanged
   PHP: SiPhp,
   JavaScript: SiJavascript,
   TypeScript: SiTypescript,
@@ -55,6 +60,13 @@ const SKILL_ICONS: Record<string, IconComponent> = {
   Postman: SiPostman,
   DigitalOcean: SiDigitalocean,
   Vercel: SiVercel,
+  // new entries for grouped skills section
+  Redux: SiRedux,
+  HTML5: SiHtml5,
+  CSS3: SiCss3,
+  Docker: SiDocker,
+  Jest: SiJest,
+  "React Native": SiReact,
 };
 
 export function SkillIcon({

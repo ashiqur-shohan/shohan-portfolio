@@ -33,13 +33,17 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <div className="space-y-1.5">
+        <Label htmlFor="name" className="text-muted-foreground font-mono text-xs">
+          Name
+        </Label>
         <Input
           id="name"
           autoComplete="name"
+          placeholder="Your name"
           aria-invalid={!!errors.name}
+          className="bg-card"
           {...register("name")}
         />
         {errors.name ? (
@@ -47,13 +51,17 @@ export function ContactForm() {
         ) : null}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="email" className="text-muted-foreground font-mono text-xs">
+          Email
+        </Label>
         <Input
           id="email"
           type="email"
           autoComplete="email"
+          placeholder="you@email.com"
           aria-invalid={!!errors.email}
+          className="bg-card"
           {...register("email")}
         />
         {errors.email ? (
@@ -61,12 +69,19 @@ export function ContactForm() {
         ) : null}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="message">Message</Label>
+      <div className="space-y-1.5">
+        <Label
+          htmlFor="message"
+          className="text-muted-foreground font-mono text-xs"
+        >
+          Message
+        </Label>
         <Textarea
           id="message"
-          rows={6}
+          rows={5}
+          placeholder="Tell me about it"
           aria-invalid={!!errors.message}
+          className="bg-card"
           {...register("message")}
         />
         {errors.message ? (
